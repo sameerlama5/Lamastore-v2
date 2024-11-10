@@ -1,32 +1,75 @@
-# Lamastore-v2
-ecommerce wesite.
+# E-commerce --v2
 
-Here’s a sample README file based on the content in your image:
+## Project Overview
 
-Project Phases and Features
-Phase 1: Core Functionality
-User Authentication and Authorization
-Register
-Roles: ADMIN, Teacher, Student
-Fields: email, phoneNumber, password, role, fullName, fatherName, motherName
-PASSWORD ENCRYPTION
-Register API
-Register Form (completed)
-Login
-Email-based Multi-User Login
-PASSWORD VERIFICATION
-Login API
-Login Form (completed)
-Generate Token (JWT)
-Admin Panel
-Teacher and Student Login Approval via Admin
-Course Management:
-Add different courses, classes, and schedules for different courses and classes.
-Assign sections and class teachers for each section.
-Teacher Panel
-Content Management:
-Add course content for assigned subjects.
-Create multiple topics based on the table of contents and add multiple segments/info to the topics.
-Student Panel
-Features to be determined in upcoming phases.
+This e-commerce platform facilitates online buying and selling, supporting multiple vendors and providing a robust admin interface for platform management.
 
+## Project Phases and Features
+
+### Phase 1: Core Functionality
+
+#### User Authentication and Authorization
+
+1. **Register**
+   - Roles: ADMIN, Vendor, User
+   - Fields:
+     - email
+     - phoneNumber
+     - password
+     - role
+     - fullName
+     - address
+     - dateOfBirth
+   - Features:
+     - PASSWORD ENCRYPTION
+     - Register API
+     - Register Form (completed)
+
+2. **Login**
+   - Email-based Multi-User Login
+   - Features:
+     - PASSWORD VERIFICATION
+     - Login API
+     - Login Form (completed)
+     - Generate Token (JWT)
+
+#### Admin Panel
+
+- Vendor and User Account Approval
+- Platform Management:
+  - Manage categories and subcategories
+  - Review and approve product listings
+  - Monitor transactions and generate reports
+  - Manage site-wide promotions and discounts
+
+#### Vendor Panel
+
+- Product Management:
+  - Add, edit, and remove products
+  - Manage inventory and pricing
+  - Set up promotions and discounts
+- Order Management:
+  - View and process orders
+  - Manage shipping and returns
+- Analytics Dashboard:
+  - View sales statistics and customer insights
+
+#### User Panel
+
+- Browse and search products
+- Add items to cart
+- Checkout and payment processing
+- View order history and track shipments
+- Leave product reviews and ratings
+
+## Getting Started
+
+(Add instructions for setting up and running the project)
+
+## Contributing
+
+(Add guidelines for contributing to the project)
+
+## License
+
+(Add license information)
