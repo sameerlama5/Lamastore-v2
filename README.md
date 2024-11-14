@@ -19,7 +19,6 @@ This e-commerce platform facilitates online buying and selling, supporting multi
      - role
      - fullName
      - address
-     - dateOfBirth
    - Features:
      - PASSWORD ENCRYPTION
      - Register API
@@ -63,7 +62,6 @@ This e-commerce platform facilitates online buying and selling, supporting multi
 - Leave product reviews and ratings
 
 ## Getting Started
-
 (Add instructions for setting up and running the project)
 
 ## Contributing

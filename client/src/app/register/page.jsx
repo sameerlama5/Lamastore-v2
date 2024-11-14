@@ -1,5 +1,4 @@
 'use client'
-
 import { useState } from 'react'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
@@ -9,6 +8,9 @@ import { Label } from "@/components/ui/label"
 import { Select } from "@/components/ui/select"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { AlertCircle, Mail, Phone, Lock, UserCircle, Home, Calendar, User } from "lucide-react"
+import axios from 'axios'
+import { useToast } from '@/hooks/use-toast'
+import Link from 'next/link'
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\$$[0-9]{2,3}\$$[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
@@ -16,20 +18,21 @@ const RegisterSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
   phoneNumber: Yup.string().matches(phoneRegExp, 'Phone number is not valid').required('Required'),
   password: Yup.string().min(8, 'Too Short!').required('Required'),
-  role: Yup.string().oneOf(['user', 'admin'], 'Invalid role').required('Required'),
+  role: Yup.string().oneOf(['user', 'admin', 'vendor'], 'Invalid role').required('Required'),
   fullName: Yup.string().required('Required'),
   address: Yup.string().required('Required'),
 })
 
 export default function Register() {
+  const { toast } = useToast()
   const [submitError, setSubmitError] = useState(null)
 
   return (
-    (<div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <Card className="w-full max-w-[1000px]">
+    (<div className="flex items-center justify-center min-h-screen bg-white p-4">
+      <Card className="w-full max-w-[600px] bg-black/90 border-none">
         <CardHeader>
-          <CardTitle>Register</CardTitle>
-          <CardDescription>Create a new account</CardDescription>
+          <CardTitle className="text-4xl text-center text-white">Register Now</CardTitle>
+          <CardDescription className="text-center">Create a new account</CardDescription>
         </CardHeader>
         <CardContent>
           <Formik
@@ -42,7 +45,20 @@ export default function Register() {
               address: '',
             }}
             validationSchema={RegisterSchema}
-            onSubmit={(values, { setSubmitting }) => {
+            onSubmit={ async(values, { setSubmitting }) => {
+              try {
+              const {data} = await axios.post('http://localhost:8000/register', values)
+              if(data) {
+                toast(
+                  {title: data.msg}
+                )
+              }
+              } catch(error) {
+                toast({
+                  variant: "destructive",
+                  title: error?.response?.data?.msg
+                })
+              }
               setSubmitError(null)
               setTimeout(() => {
                 console.log(values)
@@ -50,7 +66,7 @@ export default function Register() {
               }, 400)
             }}>
             {({ errors, touched, isSubmitting }) => (
-              <Form className="grid grid-cols-2 gap-[30px] items-center">
+              <Form className="grid grid-cols-2 gap-[30px] items-center text-white">
                 <div>
                   <Label htmlFor="email" className="flex items-center gap-2 mb-[10px]">
                     <Mail className="w-4 h-4" />
@@ -88,7 +104,7 @@ export default function Register() {
                     <UserCircle className="w-4 h-4" />
                     Role
                   </Label>
-                  <Field name="role" as={Select} id="role">
+                  <Field name="role" as="select" id="role" className="border-[1px] px-[20px] py-[10px] w-[100%] rounded-md bg-transparent text-gray-400 text-[14px]">
                     <option value="">Select a role</option>
                     <option value="user">User</option>
                     <option value="admin">Admin</option>
@@ -96,7 +112,6 @@ export default function Register() {
                   </Field>
                   {errors.role && touched.role ? <div className="text-red-500 text-sm mt-1">{errors.role}</div> : null}
                 </div>
-
                 <div>
                   <Label htmlFor="fullName" className="flex items-center gap-2 mb-[10px]">
                     <User className="w-4 h-4" />
@@ -124,9 +139,13 @@ export default function Register() {
                   </div>
                 )}
 
-                <Button type="submit" disabled={isSubmitting} className="w-full">
+                <Button type="submit" disabled={isSubmitting} className="w-full bg-blue-500 hover:bg-blue-700 transition-all duration-500">
                   {isSubmitting ? 'Submitting...' : 'Register'}
                 </Button>
+
+                <div>
+                    <p className="text-sm text-white/80">Already have an account?<Link href="/login" className='text-blue-500 ms-2 hover:underline'>Login here!</Link></p>
+                </div>
               </Form>
             )}
           </Formik>
