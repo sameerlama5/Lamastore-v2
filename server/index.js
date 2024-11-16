@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 const cor = require("cors");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const dbConnect = async () => {
   try {
@@ -43,11 +45,25 @@ app.use(cor());
 app.post("/register", async (req, res) => {
   const emailExist = await Product.exists({ email: req.body.email });
   if (emailExist) return res.status(409).send({ msg: "Email already exists" });
-
   req.body.password = await bcrypt.hash(req.body.password, saltRounds);
-
   Product.create(req.body);
   res.send({ msg: req.body.role + "Created successfully" });
+});
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  const user = await Product.findOne({ email });
+  if (!user) return res.status(401).send({ msg: "Invalid email!!" });
+  const isPasswordMatched = await bcrypt.compare(password, user.password);
+  if (!isPasswordMatched)
+    return res.status(401).send({ msg: "Invalid Password!!" });
+
+  const token = jwt.sign({ email }, process.env.SECRET_KEY);
+  res.send({
+    token,
+    user,
+    isLoggednIn: true,
+    msg: "Authorized!!",
+  });
 });
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

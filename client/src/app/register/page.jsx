@@ -98,7 +98,7 @@ export default function Register() {
                     placeholder="Password" />
                   {errors.password && touched.password ? <div className="text-red-500 text-sm mt-1">{errors.password}</div> : null}
                 </div>
-
+      
                 <div>
                   <Label htmlFor="role" className="flex items-center gap-2 mb-[10px]">
                     <UserCircle className="w-4 h-4" />

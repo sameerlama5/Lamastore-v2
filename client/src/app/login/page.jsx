@@ -8,17 +8,35 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Mail, Lock } from 'lucide-react'
 import Link from 'next/link'
-
+import axios from "axios";
+import { useRouter } from 'next/navigation'
+import { useToast } from '@/hooks/use-toast'
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string().min(6, 'Too Short!').required('Required'),
 })
 
 export default function LoginForm() {
-  const handleSubmit = (values, {
+  const router = useRouter()
+  const { toast } = useToast()
+  const handleSubmit = async (values, {
     setSubmitting
   }) => {
-    // Handle login logic here
+   try{
+    const {data} = await axios.post('http://localhost:8000/login', values)
+    const {isLoggednIn, user} =data
+    if(isLoggednIn) router.push(`/${user.role}/dashboard`)
+              if(data) {
+                toast(
+                  {title: data.msg}
+                )
+              }
+   } catch(error) {
+    toast({
+      variant: "destructive",
+      title: error?.response?.data?.msg
+    })
+   }
     console.log(values)
     setTimeout(() => {
       setSubmitting(false)
