@@ -49,9 +49,10 @@ export default function Register() {
               try {
               const {data} = await axios.post('http://localhost:8000/register', values)
               if(data) {
-                toast(
-                  {title: data.msg}
-                )
+                toast({
+                  variant: "success",
+                  title: data.msg
+                })
               }
               } catch(error) {
                 toast({
@@ -107,7 +108,6 @@ export default function Register() {
                   <Field name="role" as="select" id="role" className="border-[1px] px-[20px] py-[10px] w-[100%] rounded-md bg-transparent text-gray-400 text-[14px]">
                     <option value="">Select a role</option>
                     <option value="user">User</option>
-                    <option value="admin">Admin</option>
                     <option value="vendor">Vendor</option>
                   </Field>
                   {errors.role && touched.role ? <div className="text-red-500 text-sm mt-1">{errors.role}</div> : null}
