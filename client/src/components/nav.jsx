@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Button } from "./ui/button";
 
 const links = [
     {
@@ -24,7 +25,7 @@ const Nav = () => {
     const pathname = usePathname();
     console.log(pathname);
     return (
-        <nav className="flex gap-[30px]">
+        <nav className="flex gap-[30px] items-center">
             {links.map((link, index) => {
                 return (
                     <Link
@@ -36,6 +37,14 @@ const Nav = () => {
                     </Link>
                 );
             })}
+            <div className="flex gap-[30px]">
+                <Button className="py-[10px] px-[22px] sm:px-[30px] font-semibold border-2 border-[#00a0de] bg-[#00a0de] hover:border-[#2e3192] hover:bg-[#2e3192] transition-all duration-500">
+                    <Link href="/register">Register</Link>
+                </Button>
+                <Button className="py-[10px] px-[22px] sm:px-[30px] font-semibold bg-transparent text-[#00a0de] border-2 border-[#00a0de] hover:bg-[#00a0de] hover:text-[#fff] transition-all duration-500">
+                    <Link href="/login">Login</Link>
+                </Button>
+            </div>
         </nav>
     );
 }

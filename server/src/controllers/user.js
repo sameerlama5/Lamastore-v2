@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
-const User = require("../module/user");
+const User = require("../models/user");
+
 
 
 const register = async (req, res) => {
@@ -9,7 +10,7 @@ const register = async (req, res) => {
   if (emailExist) return res.status(409).send({ msg: "Email already exists" });
   req.body.password = await bcrypt.hash(req.body.password, saltRounds);
   User.create(req.body);
-  res.send({ msg: req.body.role + "Created successfully" });
+  res.send({ msg: req.body.name + "Created successfully" });
 }
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -27,5 +28,24 @@ const login = async (req, res) => {
     msg: "Authorized!!",
   });
 }
+// get user
+const getAllUser = async (req, res) => {
+  const data = await User.find();
+  res.send(data);
+}
+//approve user
+const approveUser = async (req, res) => {
+  const user = await User.findById(req.params.userId);
+  user.isVrified = true;
+  user.save();
+  res.send("user approved");
+};
 
-module.exports = { login, register };
+//reject user
+const rejectUser = async (req, res) => {
+  const user = await User.findById(req.params.userId);
+  user.isVrified = false;
+  user.save();
+  res.send("user approved");
+};
+module.exports = { login, register, getAllUser, approveUser, rejectUser };

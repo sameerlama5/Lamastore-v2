@@ -24,8 +24,8 @@ export default function LoginForm() {
   }) => {
    try{
     const {data} = await axios.post('http://localhost:8000/login', values)
-    const {isLoggednIn, user} =data
-    if(isLoggednIn) router.push(`/${user.role}/dashboard`)
+    const {isLoggednIn} =data
+    if(isLoggednIn) router.push(`/`)
               if(data) {
                 toast(
                   {title: data.msg}

@@ -5,9 +5,9 @@ import * as Yup from 'yup'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select } from "@/components/ui/select"
+
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { AlertCircle, Mail, Phone, Lock, UserCircle, Home, Calendar, User } from "lucide-react"
+import { AlertCircle, Mail, Phone, Lock, Home, User } from "lucide-react"
 import axios from 'axios'
 import { useToast } from '@/hooks/use-toast'
 import Link from 'next/link'
@@ -18,7 +18,6 @@ const RegisterSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
   phoneNumber: Yup.string().matches(phoneRegExp, 'Phone number is not valid').required('Required'),
   password: Yup.string().min(8, 'Too Short!').required('Required'),
-  role: Yup.string().oneOf(['user', 'admin', 'vendor'], 'Invalid role').required('Required'),
   fullName: Yup.string().required('Required'),
   address: Yup.string().required('Required'),
 })
@@ -40,7 +39,6 @@ export default function Register() {
               email: '',
               phoneNumber: '',
               password: '',
-              role: '',
               fullName: '',
               address: '',
             }}
@@ -61,14 +59,14 @@ export default function Register() {
                 })
               }
               setSubmitError(null)
-              setTimeout(() => {
+              setTimeout(() => {  
                 console.log(values)
                 setSubmitting(false)
               }, 400)
             }}>
             {({ errors, touched, isSubmitting }) => (
-              <Form className="grid grid-cols-2 gap-[30px] items-center text-white">
-                <div>
+              <Form className="text-white">
+                <div className='mb-[10px]'>
                   <Label htmlFor="email" className="flex items-center gap-2 mb-[10px]">
                     <Mail className="w-4 h-4" />
                     Email
@@ -77,7 +75,7 @@ export default function Register() {
                   {errors.email && touched.email ? <div className="text-red-500 text-sm mt-1">{errors.email}</div> : null}
                 </div>
 
-                <div>
+                <div className='mb-[10px]'>
                   <Label htmlFor="phoneNumber" className="flex items-center gap-2 mb-[10px]">
                     <Phone className="w-4 h-4" />
                     Phone Number
@@ -86,7 +84,7 @@ export default function Register() {
                   {errors.phoneNumber && touched.phoneNumber ? <div className="text-red-500 text-sm mt-1">{errors.phoneNumber}</div> : null}
                 </div>
 
-                <div>
+                <div className='mb-[10px]'>
                   <Label htmlFor="password" className="flex items-center gap-2 mb-[10px]">
                     <Lock className="w-4 h-4" />
                     Password
@@ -99,20 +97,7 @@ export default function Register() {
                     placeholder="Password" />
                   {errors.password && touched.password ? <div className="text-red-500 text-sm mt-1">{errors.password}</div> : null}
                 </div>
-      
-                <div>
-                  <Label htmlFor="role" className="flex items-center gap-2 mb-[10px]">
-                    <UserCircle className="w-4 h-4" />
-                    Role
-                  </Label>
-                  <Field name="role" as="select" id="role" className="border-[1px] px-[20px] py-[10px] w-[100%] rounded-md bg-transparent text-gray-400 text-[14px]">
-                    <option value="">Select a role</option>
-                    <option value="user">User</option>
-                    <option value="vendor">Vendor</option>
-                  </Field>
-                  {errors.role && touched.role ? <div className="text-red-500 text-sm mt-1">{errors.role}</div> : null}
-                </div>
-                <div>
+                <div className='mb-[10px]'>
                   <Label htmlFor="fullName" className="flex items-center gap-2 mb-[10px]">
                     <User className="w-4 h-4" />
                     Full Name
@@ -121,7 +106,7 @@ export default function Register() {
                   {errors.fullName && touched.fullName ? <div className="text-red-500 text-sm mt-1">{errors.fullName}</div> : null}
                 </div>
 
-                <div>
+                <div className='mb-[10px]'>
                   <Label htmlFor="address" className="flex items-center gap-2 mb-[10px]">
                     <Home className="w-4 h-4" />
                     Address

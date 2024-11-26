@@ -11,12 +11,11 @@ This e-commerce platform facilitates online buying and selling, supporting multi
 #### User Authentication and Authorization
 
 1. **Register**
-   - Roles: ADMIN, Vendor, User
+   - Roles: ADMIN,User
    - Fields:
      - email
      - phoneNumber
      - password
-     - role
      - fullName
      - address
    - Features:
@@ -33,8 +32,6 @@ This e-commerce platform facilitates online buying and selling, supporting multi
      - Generate Token (JWT)
 
 #### Admin Panel
-
-- Vendor and User Account Approval
 - Platform Management:
   - Manage categories and subcategories
   - Review and approve product listings
