@@ -12,7 +12,7 @@ const createProduct = async (req, res) => {
 };
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate('category');
+    const products = await Product.find();
     res.json(products);
     res.json(products);
   } catch (error) {
@@ -22,7 +22,7 @@ const getAllProducts = async (req, res) => {
 
 const getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).populate('category');
+    const product = await Product.findById(req.params.id);
     if(!product) return res.status(404).json({message: 'Product not found'});
     res.json(product);
   } catch (error) {
