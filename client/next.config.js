@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-      domains: ["media.istockphoto.com"], // Allow images from this domain
+      domains: ["localhost"], // Allow images from this domain
     },
   };
   

@@ -34,55 +34,60 @@ export default function ProductForm() {
       description: '',
       price: '',
       stock: '',
-      image: null,
+      imageUrl: '/image.jpg',
       category: '',
     },
     validationSchema: ProductSchema,
-    onSubmit: async (values, { resetForm }) => {
-      setIsSubmitting(true);
-      setFormStatus('');
-      try {
-        const formData = new FormData();
-        formData.append('image', values.image);
 
+    
+    onSubmit: async (values, { resetForm }) => {
+      setIsSubmitting(true); // Disable submit button
+      setFormStatus(''); // Clear previous status
+    
+      try {
         // Upload image to the server
-        const imageResponse = await fetch('http://localhost:8000/uploadproduct', {
+        const formData = new FormData();
+        formData.append('product', values.image);
+        
+        const response = await fetch('http://localhost:8000/uploadproduct', {
           method: 'POST',
-          headers: { Accept: 'application/json' },
           body: formData,
         });
-
-        const imageResult = await imageResponse.json();
+        
+        const imageResult = await response.json();
+        
+    // This will show the full object in the alert as a strin
+    
         if (!imageResult.success) {
           throw new Error('Image upload failed.');
         }
-
+    
         const productData = {
-          ...values,
-          image: imageResult.image_url, // Use uploaded image URL
+          name: values.name,
+          description: values.description,
+          price: values.price,
+          stock: values.stock,
+          imageUrl: imageResult.image_urls[0], // Map to backend's 'imageUrl'
+          category: values.category,
         };
-
-        // Submit product details
-        const productResponse = await axios.post(
-          'http://localhost:8000/product',
-          productData
-        );
-
+    
+        // Submit product details to the server
+        const productResponse = await axios.post('http://localhost:8000/product', productData);
+    
         if (productResponse.status === 200 || productResponse.status === 201) {
           setFormStatus('Product added successfully!');
           resetForm();
-          setPreviewImage(null);
+          setPreviewImage(null); // Clear the preview image after successful submission
         } else {
           throw new Error('Failed to add product.');
         }
       } catch (error) {
-        setFormStatus(
-          `Error: ${error.response?.data?.message || error.message}`
-        );
+        setFormStatus(`Error: ${error.message}`);
       } finally {
-        setIsSubmitting(false);
+        setIsSubmitting(false); // Re-enable submit button
       }
-    },
+    }
+    
   });
 
   const handleImageChange = (event) => {
@@ -96,7 +101,7 @@ export default function ProductForm() {
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className="space-y-4 max-w-[80%] md:max-w-[50%] mx-auto bg-gray-200 p-4 rounded-md"
+      className="w-full"
     >
       {/* Name */}
       <div>
@@ -163,10 +168,10 @@ export default function ProductForm() {
 
       {/* Image */}
       <div>
-        <Label htmlFor="image">Image</Label>
+        <Label htmlFor="imageUrl">Image</Label>
         <Input
-          id="image"
-          name="image"
+          id="imageUrl"
+          name="product"
           type="file"
           onChange={handleImageChange}
           onBlur={formik.handleBlur}
@@ -178,7 +183,7 @@ export default function ProductForm() {
       </div>
 
       {/* Category */}
-      <div>
+      <div className='mb-[15px]'>
         <Label htmlFor="category">Category</Label>
         <select
           id="category"
@@ -199,7 +204,7 @@ export default function ProductForm() {
       </div>
 
       {/* Submit Button */}
-      <Button type="submit" className="w-full" disabled={isSubmitting}>
+      <Button type="submit" className="w-full hover:bg-blue-700 bg-blue-500 text-white" disabled={isSubmitting}>
         {isSubmitting ? 'Submitting...' : 'Submit'}
       </Button>
 
