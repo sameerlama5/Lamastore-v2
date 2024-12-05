@@ -1,5 +1,4 @@
 'use client'
-
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import { Button } from "@/components/ui/button"
@@ -11,6 +10,7 @@ import Link from 'next/link'
 import axios from "axios";
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
+import "react-toastify/dist/ReactToastify.css";
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string().min(6, 'Too Short!').required('Required'),
@@ -24,6 +24,12 @@ export default function LoginForm() {
   }) => {
    try{
     const {data} = await axios.post('http://localhost:8000/login', values)
+    // Check if login was successful
+    if (data.token && data.user) {
+      // Save user data and token in localStorage
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+    }
     const {isLoggednIn} =data
     if(isLoggednIn) router.push(`/`)
               if(data) {
