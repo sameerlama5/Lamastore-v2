@@ -9,8 +9,8 @@ const Header = () => {
     <header className="py-[20px] shadow-sm">
       <div className="container flex justify-between items-center">
             <Link href="/">
-            <h1 className="h3 font-semibold">
-                Lama <span className="text-black">Store.</span>
+            <h1 className="h3 font-semibold text-[#2e3192]">
+                Lama <span className="text-[#00a0de]">Store.</span>
             </h1>
             </Link>
 

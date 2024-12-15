@@ -71,10 +71,8 @@ export default function Home() {
               >
                 <div className="overflow-hidden p-0 relative h-auto">
                   <img
-                    width={300}
-                    height={300}
                     alt={item.title}
-                    className="w-full h-[100%] object-cover object-center flex rounded-t-lg"
+                    className="aspect-square object-cover object-center flex rounded-t-lg"
                     src={item.imageUrl}
                     unoptimized
                   />
