@@ -37,29 +37,14 @@ export default function Home() {
       });
   
       if (productResponse.status === 200 || productResponse.status === 201) {
-        alert('Product added successfully!');
       }
     } catch (error) {
-      console.error('Error adding product to cart:', error);
       if (error.response) {
-        console.error('Response data:', error.response.data);
-        console.error('Response status:', error.response.status);
-        console.error('Response headers:', error.response.headers);
-        alert(`Error: ${error.response.data.message}`);
       } else if (error.request) {
-        console.error('Request made but no response:', error.request);
       } else {
-        console.error('Error message:', error.message);
       }
-      alert('Error adding product to cart');
     }
   };
-  
-  
-  
-  
-  
-
   return (
     <main>
       <Header />
