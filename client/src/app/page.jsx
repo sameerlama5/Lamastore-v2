@@ -2,13 +2,15 @@
 
 import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
-import { CalendarCheck, HeartIcon, LucideCombine, ShoppingCart } from "lucide-react";
+import { CalendarCheck, HeartIcon, Joystick, LucideCombine, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import axios from 'axios';
 
 export default function Home() {
   const [productList, setProductList] = useState([]);
+  const [userData, setUserData] = useState(null);
 
   // Function to fetch product data
   const fetchProducts = async () => {
@@ -19,7 +21,44 @@ export default function Home() {
   };
   useEffect(() => {
     fetchProducts();
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUserData(storedUser || null);
   }, []);
+
+  const addToCart = async (userId, productId) => {
+    const Data = { userId, productId };
+    alert(JSON.stringify(Data))
+  
+    try {
+      const productResponse = await axios.post('http://localhost:8000/cart', Data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (productResponse.status === 200 || productResponse.status === 201) {
+        alert('Product added successfully!');
+      }
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+      if (error.response) {
+        console.error('Response data:', error.response.data);
+        console.error('Response status:', error.response.status);
+        console.error('Response headers:', error.response.headers);
+        alert(`Error: ${error.response.data.message}`);
+      } else if (error.request) {
+        console.error('Request made but no response:', error.request);
+      } else {
+        console.error('Error message:', error.message);
+      }
+      alert('Error adding product to cart');
+    }
+  };
+  
+  
+  
+  
+  
 
   return (
     <main>
@@ -76,7 +115,7 @@ export default function Home() {
                     src={item.imageUrl}
                     unoptimized
                   />
-                  <div className="flex justify-end w-[100%] absolute bottom-[-188px] group-hover:bottom-[0] transition-all duration-700 bg-white">
+                  <div className="flex justify-end w-[100%] absolute bottom-[-188px] group-hover:bottom-[0] transition-all duration-700 bg-white cursor-pointer">
                     <ul className="text-end w-[100%]">
                       <li className="flex items-center justify-end gap-3 py-2 px-3 border-b-[1px] border-b-gray-200 hover:bg-gray-100 hover:text-[#00a0de]">
                         Details
@@ -86,8 +125,9 @@ export default function Home() {
                         Compare
                         <LucideCombine className="text-[#00a0de]" />
                       </li>
-                      <li className="flex items-center justify-end gap-3 py-2 px-3 border-b-[1px] border-b-gray-200 hover:bg-gray-100 hover:text-[#00a0de]">
+                      <li className="flex items-center justify-end gap-3 py-2 px-3 border-b-[1px] border-b-gray-200 hover:bg-gray-100 hover:text-[#00a0de]"  onClick={() => addToCart(userData._id, item._id)}  >
                         Add to card
+                        
                         <ShoppingCart className="text-[#00a0de]" />
                       </li>
                       <li className="flex items-center justify-end gap-3 py-2 px-3 border-b-[1px] border-b-gray-200 hover:bg-gray-100 hover:text-[#00a0de]">
