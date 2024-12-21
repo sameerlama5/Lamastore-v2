@@ -29,6 +29,8 @@ const Product = () => {
       console.error("Failed to delete the product:", error);
     }
   }
+
+
   return (
     <div>
       <Dialog>
